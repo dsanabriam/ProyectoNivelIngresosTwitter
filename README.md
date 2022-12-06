@@ -26,7 +26,7 @@ Posteriormente, se probaron varios algoritmos para predecir no solo el nivel de 
 
 Para este proyecto se usara el accuracy del base de pruebas como medida de desempeño para escoger el mejor modelo. 
 
-# Analysis <a name="analysis"></a>
+# Analisis <a name="analysis"></a>
 
 #### Descriptivas 
 Hay un total de 1031 usuarios únicos de Twitter.  
