@@ -1,6 +1,6 @@
 # Modelo de Predicción del Nivel de Ingresos basado en modelos de procesamiento de lenguaje natural en redes sociales digitales “Twitter”
 
-##Por 
+## Por 
 ## Diana Sanabria 
 ## Laura Nuñez
 ## Camilo Peñaranda 
