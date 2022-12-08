@@ -1,92 +1,87 @@
-# score-classifier-andes
+# Modelo de Predicción del Nivel de Ingresos basado en modelos de procesamiento de lenguaje natural en redes sociales digitales “Twitter”
+
+## Por 
+## Diana Sanabria 
+## Laura Nuñez
+## Camilo Peñaranda 
+
+# Tabla de contenido
+
+1. [Definición del proyecto](#definition)
+2. [Analisis](#analysis)
+3. [Conclusiones](#conclusion)
 
 
+# Definición del proyecto <a name="definition"></a>
 
-## Getting started
+## Descripción del proyecto
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Desarrollar un modelo de clasificación que permita la identificación de perfiles por niveles de ingreso (alto, medio, bajo) a partir de la información registrada en Twitter de una persona para el otorgamiento de créditos. 
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Desarrollo del proyecto 
+Se obtuvieron 2.7 millones de textos extraidos de Twitter mediante el uso de API´s los cuales que se almacenaron en Mongo DB para posteriormente hacer un preprocesamiento de estos datos no estructurados. Para lo antetrior, se usaron técnicas de NLP.  
+Posteriormente, se probaron varios algoritmos para predecir no solo el nivel de ingreso, sino también las variables demográficas de interés que harán parte del dataset de entrada, adicionando el texto tratado mediante NLP descrito anteriormente.
 
-## Add your files
+### Métricas 
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Para este proyecto se usara el accuracy del base de pruebas como medida de desempeño para escoger el mejor modelo. 
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/lumoncolombia/research-ptojects/score-classifier-andes.git
-git branch -M main
-git push -uf origin main
-```
+# Analysis <a name="analysis"></a>
 
-## Integrate with your tools
+#### Descriptivas 
+Hay un total de 1031 usuarios únicos de Twitter.  
+Hay un total de 2.7 millones de textos. 
 
-- [ ] [Set up project integrations](https://gitlab.com/lumoncolombia/research-ptojects/score-classifier-andes/-/settings/integrations)
+Género: Esta variable se completó de manera heurística considerando la información que estaba publicada, clasificándola en hombre o mujer. Siendo así, 652 usuarios son hombres y 379 mujeres. 
 
-## Collaborate with your team
+Nivel de Ingresos: Para determinar el nivel de ingresos se tomó como referencia la profesión, la edad y el género. De la siguiente forma: 
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Se realizó la extracción de información de los salarios según las profesiones de Talent.com6 correspondiente a una página de reclutamiento laboral en Colombia.   
 
-## Test and Deploy
+Se consultó en el Departamento Administrativo Nacional de Estadística (DANE) 7 la brecha salarial según género, en donde para las mujeres se encuentra una brecha salarial de 23.9% por debajo con respecto al salario que devengan los hombres.    
 
-Use the built-in continuous integration in GitLab.
+Se consultó en el DANE la brecha salarial según género y edad, agrupado por rangos de edad. 
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Se graficó y analizó la distribución estadística de los niveles de ingresos de las 1.301 cuentas de usuarios del estudio, ubicándolos en percentiles. 
 
-***
+Segmentación de la variable Nivel de Ingresos: Se consideraron los siguientes percentiles para asignar el nivel de ingresos:   
 
-# Editing this README
+Nivel de Ingresos Alto: Se asignaron los casos desde percentil 60 en adelante. 
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Nivel de Ingresos Medio: Se asignaron los casos entre el percentil 40 a 59. 
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Nivel de Ingresos Bajo: Se asignaron los casos del percentil 40 hacia abajo. 
 
-## Name
-Choose a self-explaining name for your project.
+#### Desempeño modelos. 
+Los modelos que predicen las variables de entrada presentan un Accuracy de 0.4353 en Edad mediante XGBoost, 0.6544 en Género y 0.4477 en Ocupación con RNN GRU.
+La clasificación realizada por el modelo de nivel de ingreso seleccionado tiene una puntuación de Accuracy de 0.88 con el modelo de Extreme Gradient Boosting- XGBoost.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+# Conclusiones <a name="conclusion"></a>
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+## Limitaciones
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Dentro de las limitaciones más relevantes que se encontraron a la hora de realizar este trabajo se encuentran las siguientes:   
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+No existe en este momento, metodologías robustas e información de lenguaje natural procesado adecuados al idioma español. 
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Para lograr obtener un buen desempeño, se deben usar algoritmos que tienen un alto costo computacional en el procesamiento de datos. 
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+La extracción de información no se encuentra disponible para su libre descarga, que garantice una base robusta y balanceada. 
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+El entrenamiento de la base de datos se creó para cuentas de usuarios reconocidos públicamente, por lo cual las variables usadas en el modelo están asignadas a criterios de experto, por cuánto puede existir un margen de error y desbalanceo de las clases. 
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+La estimación final del modelo de nivel de ingreso, aunque presenta un buen nivel en términos del desempeño y las métricas evaluadas, en el momento de la implementación recibirá como variables de entrada las predicciones de los modelos estimados para género, profesión y rangos de edad, los cuales reciben como única variable de entrada el texto, las cuales estarán afectadas por no presentar en todos los casos buenos niveles de precisión; de tal manera que, se puede afectar y distorsionar el resultado final de la predicción del nivel de ingreso que es la salida final de la ejecución secuencial de los modelos mencionados previamente y la que mayor tiene relevancia para este caso. 
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+## Recomendaciones 
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Dentro de las recomendaciones más destacadas para trabajos futuros a realizar en la predicción de variables sociodemográficas y nivel de ingreso empleando redes sociales digitales, se exponen las siguientes: 
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Los modelos estimados mediante ensambles de árboles – para este caso XGBoost – presentan medidas de desempeño similares o incluso más altas que los modelos estimados mediante redes neuronales, esto, siendo importante al momento de la implementación de los modelos en los desarrollos posteriores, no solo por las mejores métricas evaluadas, sino también por la eficiencia y el bajo costo en el uso de los recursos computacionales en la estimación y predicción de las categorías de interés.  
 
-## License
-For open source projects, say how it is licensed.
+Robustecer los lexicones en el idioma español. 
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Construir o implementar nuevas variables que puedan robustecer el desempeño de los modelos. 
+
+Implementar los modelos bajo información de las demás redes sociales disponibles que permitan robustecer los resultados del caso de uso, mediante el uso de los demás componentes disponibles. 
+
+En atención a una posterior etapa de este trabajo, en lo que se refiere la implementación del modelo se deber tener en cuenta que para cada variable (edad, genero, profesión) se aplica un modelo el cual tiene asociado un margen de error y que a su vez se usarían como entrada en el modelo para la predicción del nivel de ingreso.  
